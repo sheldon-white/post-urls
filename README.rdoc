@@ -1,0 +1,9 @@
+{
+  "crawl_request": {
+  "source": "postman",
+  "urls_attributes": [
+    {"url_text": "foo"},
+    {"url_text": "baz"}
+    ]
+  }
+}
