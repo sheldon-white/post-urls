@@ -7,17 +7,17 @@ class CrawlRequestsController < ApplicationController
   # GET /crawl_requests
   # GET /crawl_requests.json
   def index
-    @crawl_requests = CrawlRequest.all
-    
-    render json: @crawl_requests
+    @crawl_requests = CrawlRequest.includes(:urls)
+
+    render json: @crawl_requests, :include => :urls
   end
 
   # GET /crawl_requests/1
   # GET /crawl_requests/1.json
   def show
-    @crawl_request = CrawlRequest.find(params[:id])
+    @crawl_request = CrawlRequest.includes(:urls).find(params[:id])
 
-    render json: @crawl_request
+    render json: @crawl_request, :include => :urls
   end
 
   # GET /crawl_requests/new
@@ -31,10 +31,11 @@ class CrawlRequestsController < ApplicationController
   # POST /crawl_requests
   # POST /crawl_requests.json
   def create
-    @crawl_request = CrawlRequest.new(params[:crawl_request])
+    @crawl_request = CrawlRequest.new(crawl_request_params)
+#    @crawl_request = CrawlRequest.new(params[:crawl_request])
     @crawl_request.urls.build(params[:crawl_request][:urls_attributes])
     if @crawl_request.save
-      render json: @crawl_request, status: :created, location: @crawl_request
+      render json: @crawl_request, status: :created, location: @crawl_request, :include => :urls
     else
       render json: @crawl_request.errors, status: :unprocessable_entity
     end
@@ -62,7 +63,7 @@ class CrawlRequestsController < ApplicationController
   end
 private 
   def crawl_request_params
-    params.require(:crawl_request).permit(:source, urls: [:crawl_request_id, :external_id, :url_text, :status, :created_at, :updated_at])
+    params.require(:crawl_request).permit(:source, urls_attributes: [:crawl_request_id, :external_id, :url_text, :status, :created_at, :updated_at])
   end
 
 end
