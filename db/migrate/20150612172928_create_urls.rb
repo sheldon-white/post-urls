@@ -5,8 +5,6 @@ class CreateUrls < ActiveRecord::Migration
       t.string :url_text
       t.integer :external_id
       t.string :status
-      t.string :source
-      t.integer :maximum_crawl_depth
 
       t.timestamps
     end

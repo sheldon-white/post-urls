@@ -24,8 +24,6 @@ ActiveRecord::Schema.define(version: 20150612172928) do
     t.string   "url_text"
     t.integer  "external_id"
     t.string   "status"
-    t.string   "source"
-    t.integer  "maximum_crawl_depth"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -31,8 +31,8 @@ class CrawlRequestsController < ApplicationController
   # POST /crawl_requests
   # POST /crawl_requests.json
   def create
-    @crawl_request = CrawlRequest.new(crawl_request_params)
-
+    @crawl_request = CrawlRequest.new(params[:crawl_request])
+    @crawl_request.urls.build(params[:crawl_request][:urls_attributes])
     if @crawl_request.save
       render json: @crawl_request, status: :created, location: @crawl_request
     else
@@ -60,24 +60,9 @@ class CrawlRequestsController < ApplicationController
 
     head :no_content
   end
-
+private 
   def crawl_request_params
-  # I want to accept a POST with nested attributes
-  #  {
-  #    "crawl_request": {
-  #      "source": "postman",
-  #      "urls_attributes": [
-  #        {"url_text": "foo"},
-  #        {"url_text": "baz"}
-  #      ]
-  #    }
-  #  }
-
-    # I've various things, without success...
-    params.require(:crawl_request).require(:source).require(urls_attributes: [:url_text])
-
-    #params.require(:crawl_request).require(:source urls_attributes: [ :url_text ])
-    #params.require(:crawl_request => [ :source, { urls_attributes: :url_text } ])
+    params.require(:crawl_request).permit(:source, urls: [:crawl_request_id, :external_id, :url_text, :status, :created_at, :updated_at])
   end
 
 end
