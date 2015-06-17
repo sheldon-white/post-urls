@@ -32,8 +32,7 @@ class CrawlRequestsController < ApplicationController
   # POST /crawl_requests.json
   def create
     @crawl_request = CrawlRequest.new(crawl_request_params)
-#    @crawl_request = CrawlRequest.new(params[:crawl_request])
-    @crawl_request.urls.build(params[:crawl_request][:urls_attributes])
+
     if @crawl_request.save
       render json: @crawl_request, status: :created, location: @crawl_request, :include => :urls
     else
